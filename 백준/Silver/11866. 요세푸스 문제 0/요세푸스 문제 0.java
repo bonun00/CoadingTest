@@ -14,19 +14,18 @@ public class Main {
         int comm=0;
         List arr =new ArrayList<>();
         ArrayList result= new ArrayList<>();
-//        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         for(int i=1; i<=len; i ++){
             arr.add(i);
         }
         for(int i= 0; i<len; i++){
             comm=(comm+ num-1)%arr. size();
-            result.add(arr.get(comm));
-            arr.remove(comm);
+            sb.append(arr.remove(comm)).append(", ");
+            
         }
-        System.out.print("<");
-        for(int i=0; i<len-1; i++){
-        System.out.print(result.get(i)+", ");}
-        System.out.print(result.get(len-1));
-        System.out.print(">");
-    }
+       if(sb.length()>0){
+	sb.setLength(sb.length()-2);	
+	}
+    	System.out.println("<"+sb.toString()+">");
+	}
 }
