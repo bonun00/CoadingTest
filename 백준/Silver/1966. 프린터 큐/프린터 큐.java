@@ -13,7 +13,7 @@ public class Main {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(reader.readLine());
-
+      
         for(int i = 0; i < n; i++){
             StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
             int w = Integer.parseInt(tokenizer.nextToken());
@@ -25,6 +25,7 @@ public class Main {
                 queue.add(Integer.parseInt(tokenizer2.nextToken()));
                 if(p==j){
                     q.add(1);
+                 
                 }else{
                     q.add(0);
                 }
@@ -33,16 +34,20 @@ public class Main {
             while(true){
                 int max=queue.stream().max(Integer::compare).get();
                 if(queue.peek()==max){
-                    queue.poll();
+                    int a=queue.peek();
+                    queue.remove(a);
                     answer++;
-                    int isTarget=q.poll();
-                    if(isTarget==1){
+                    if(q.peek()==1){
                         break;
+                    }else{
+                        q.remove(q.peek());
                     }
 
                 }else{
-                    int a= queue.poll();
-                    int b= q.poll();
+                    int a= queue.peek();
+                    int b= q.peek();
+                    queue.remove(a);
+                    q.remove(b);
                     queue.add(a);
                     q.add(b);
                 }
