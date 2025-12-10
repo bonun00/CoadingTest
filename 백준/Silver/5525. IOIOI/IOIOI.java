@@ -1,5 +1,4 @@
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,24 +11,46 @@ class Main {
         int N=Integer.parseInt(br.readLine());
         int S=Integer.parseInt(br.readLine());
         String str =br.readLine();
-        String ioi="I";
+    
         int answer=0;
+   //     String ioi="I";
+     //   for(int i=0;i<N;i++){
+       //     ioi+="OI";
+      //  }
+        int count=0;
 
-        for(int i=0;i<N;i++){
-            ioi+="OI";
-        }
 
-        for(int i=0; i<S; i++){
-            if((str.charAt(i)+"").equals("I")){
+        int i=1;
+        while(i<S-1){
+            if (str.charAt(i - 1) == 'I' && str.charAt(i) == 'O' && str.charAt(i+1) == 'I') {
 
-                if(i+ioi.length()-1>str.length()-1)continue;
-//                System.out.println(ioi+" "+str.substring(i,i+ioi.length()));
-                if(ioi.equals(str.substring(i,i+ioi.length()))){
+                count++;
+
+                if(count==N){
                     answer++;
+                    count--;
                 }
-            }
 
+                i+=2;
+            }else{
+                count=0;
+                i+=1;
+            }
         }
+
+
+
+//        for(int i=0; i<S; i++){
+//            if((str.charAt(i)+"").equals("I")){
+//
+//                if(i+ioi.length()-1>str.length()-1)continue;
+////                System.out.println(ioi+" "+str.substring(i,i+ioi.length()));
+//                if(ioi.equals(str.substring(i,i+ioi.length()))){
+//                    answer++;
+//                }
+//            }
+//
+//        }
         System.out.println(answer);
 
 
