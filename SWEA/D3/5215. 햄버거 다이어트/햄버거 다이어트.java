@@ -46,8 +46,10 @@ class Solution
         
            if(index==n)return;
       
-        
-           dfs(index+1, score+ham[index][0],cal+ham[index][1]);
-           dfs(index+1, score,cal);
+        for (int i = index; i < n; i++) {
+        if (cal + ham[i][1] <= limit) {
+            dfs(i + 1, score + ham[i][0], cal + ham[i][1]);
+        }
+    }
     } 
 }
