@@ -35,13 +35,15 @@ class Solution
 		}
 	}
     public static void dfs(int index, int score,int cal){
-        	if(cal>limit) return;
+     
+    		
         
-    
-            	if(score>ans){
-                	ans=score;
+            if(cal<=limit){
+                    if(score>ans){
+                    ans=score;
                 }
-         
+            } 
+        
            if(index==n)return;
       
         
