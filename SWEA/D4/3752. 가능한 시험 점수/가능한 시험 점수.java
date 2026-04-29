@@ -5,10 +5,6 @@ import java.io.FileInputStream;
 
 class Solution
 {
-	static int n;
-    static int p[];
-    static Set<Integer> ans;
-    static boolean[][] visited;
     public static void main(String args[]) throws Exception
 	{
 	
@@ -20,36 +16,38 @@ class Solution
 		for(int test_case = 1; test_case <= T; test_case++)
 		{
 				
-            n=sc.nextInt();
-            p=new int[n];
-            ans=new HashSet<>();
-            visited=new boolean[101][10001];
+            int n=sc.nextInt();
+     		int max=0;     
+          
+            int[] p= new int[n];
             for(int i=0; i<n; i++){
-            	p[i]=sc.nextInt();
+ 				p[i]=sc.nextInt();
+                max+=p[i];            
+            }
+            boolean[][] dp= new boolean [n+1][max+1];
+
+            dp[0][0]=true;
+			for(int i=1; i<=n; i++){
+            	int cur=p[i-1];
+                for(int j=0; j<=max; j++ ){
+                if(dp[i-1][j]){
+                	dp[i][j]=true;
+					if(j+cur<=max){
+                    dp[i][j+cur]=true;
+                    
+                    }                
+                }
+            
+            }
+            }
+            int ans=0; 
+            for(int i=0; i<=max; i++){
+                	if(dp[n][i])ans++;
             }
             
-            dfs(0,0);
+            
 		
-        System.out.println("#"+test_case+" "+ans.size());
+        System.out.println("#"+test_case+" "+ans);
         }
 	}
-    
-    public static void dfs(int res, int idx){
-    
-        		if(visited[idx][res])return;
-        		visited[idx][res]=true;
-        	
-    			if(idx==n){
-                	ans.add(res);
-                    return;
-                };
- 			   
-        
-	    		dfs(res+p[idx], idx+1);
-        		dfs(res, idx+1);
-    
-    
-    }
-    
-    
 }
