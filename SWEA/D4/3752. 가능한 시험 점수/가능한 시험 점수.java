@@ -24,25 +24,21 @@ class Solution
  				p[i]=sc.nextInt();
                 max+=p[i];            
             }
-            boolean[][] dp= new boolean [n+1][max+1];
+            boolean[] dp= new boolean [max+1];
 
-            dp[0][0]=true;
-			for(int i=1; i<=n; i++){
-            	int cur=p[i-1];
-                for(int j=0; j<=max; j++ ){
-                if(dp[i-1][j]){
-                	dp[i][j]=true;
-					if(j+cur<=max){
-                    dp[i][j+cur]=true;
-                    
-                    }                
-                }
-            
+            dp[0]=true;
+			for(int i=0; i<n; i++){
+            	int cur=p[i];
+                for(int j=max;  j>=cur;  j-- ){
+					if(dp[j-cur]){
+                    	dp[j]=true;
+                    }	    			       			
+    	        
             }
             }
             int ans=0; 
             for(int i=0; i<=max; i++){
-                	if(dp[n][i])ans++;
+                	if(dp[i])ans++;
             }
             
             
