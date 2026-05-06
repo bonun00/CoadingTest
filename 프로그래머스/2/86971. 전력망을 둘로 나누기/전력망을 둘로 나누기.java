@@ -2,67 +2,69 @@ import java.util.*;
 
 class Solution {
     
-    static ArrayList<Integer> [] tree;
+    static List<Integer>[] node;
     static boolean[] visited;
     
-    public int solution(int n, int[][] wires) {
-        int answer = -1;
-        
-        int minDiff=Integer.MAX_VALUE; 
-        
-       
-        for(int k=0; k<wires.length; k++){
-             tree=new ArrayList[n+1];
-            
-            for(int u=1; u<=n; u++){
-                tree[u]=new ArrayList<>();
-            }
-             visited= new boolean[n+1];
-            for(int i=0; i<wires.length; i++){
-          
-                if(i!=k){
-                    int v1 = wires[i][0];
-                    int v2 = wires[i][1];
-                    tree[v1].add(v2);
-                    tree[v2].add(v1);
-                }
-        }
-            
-            int count =dfs(1);    
-            
-            int temp= Math.abs(count-(n-count));
-                
-           if(minDiff>temp){
-               minDiff=temp;
-           }
-                
-                
-        
-            
-        }
-        
-        
-        return minDiff;
-    }
     
-    static int dfs(int n){
-        int answer=0; 
-        LinkedList<Integer> l=new LinkedList<>();
-        l.add(n);
-        while(!l.isEmpty()){
-            int cur=l.poll();
-            List<Integer>temp= tree[cur];
-            if(visited[cur])continue;
-            answer++;
-            visited[cur]=true;
-            l.addAll(temp);
+    public int solution(int n, int[][] wires) {
+        int answer = Integer.MAX_VALUE;
+        
+        node=new ArrayList[n+1];
+        
+   
+         
+        for(int i=0; i<wires.length; i++){
+            
+            for(int u=0; u<=n; u++){
+                node[u]=new ArrayList<>();
+            }
+            visited=new boolean[n+1];
+            for(int j=0; j<wires.length; j++){
+                if(i!=j){
+                    int a= wires[j][0];
+                    int b= wires[j][1];
+                    node[b].add(a);
+                    node[a].add(b);
+                }
+                
+            }
+            int c=bfs(1);
+            int a= Math.abs(c-(n-c));
+            if(answer>a ){
+                    
+                answer=a;
+            }
+                
+            
+            
         }
         
+
         
         return answer;
     }
     
-    
+    static int bfs(int a){
+        Deque<Integer> q=new ArrayDeque<>();
+        int ans=1;
+        visited[a]=true;
+        q.add(a);
+        
+        while(!q.isEmpty()){
+            int temp=q.poll();
+  
+            for(int n: node[temp]){
+                if(visited[n])continue;
+                visited[n]=true;
+                 ans++;
+                 q.add(n);
+            }
+           
+        }        
+        
+        return ans;
+        
+    }
     
     
 }
