@@ -1,103 +1,74 @@
 import java.util.*;
+
 class Solution {
-    
-    private boolean[][] visited;
-    private final Set<Integer> set = new HashSet<>();
-    
+    static boolean visited[][];
+    static int[][] move={{1,0},{0,1},{0,-1},{-1,0}};
+    static int[][] l;
+    static int[] ans;
     public int solution(int[][] land) {
-        int rows=land.length;
-        int cols=land[0].length;
-        
-        visited= new boolean[rows][cols];
-        int[][] map = new int[rows][cols];
-        List<Integer> oilCount =new ArrayList<>();
-        
-        
-        for (int w=0; w<land[0].length; w++){
-            for(int d=0; d<land.length; d++){
-                if(!visited[d][w]&& land[d][w]==1){
-                int count= search(land ,d,w,oilCount.size()+1, map);
-                
-                oilCount.add(count);
-                }
-                }
-        }
-        return getMaxCount(map, oilCount,rows,cols);
-    }
-    
-    private int getMaxCount(int[][]map, List<Integer> list, int rows, int cols ){
-        int max =0;
-        
-        for(int col=0; col<cols; col++){
-            int count=0;
-            for(int row =0; row<rows; row++){
-                if(map[row][col]>0 ){
-                    set.add(map[row][col]);
-                }
+        int answer = 0;
+        l=land;
+        visited=new boolean[l.length][l[0].length];
+        ans=new int [l[0].length];
+        for(int i=0; i<l.length; i++){
+            for(int j=0; j<l[0].length; j++){
+                if(visited[i][j]||l[i][j]==0)continue;
+                bfs(i,j);
             }
-            for(Integer id : set){
-                count += list.get(id-1);
+        }
+        for(int i=0; i<l[0].length; i++){
+            answer=Math.max(answer, ans[i]);
+        }
+        
+        
+        return answer;
+    }
+
+    
+    void bfs(int a, int b){
+        Deque<int[]> q=new ArrayDeque<>();
+        Set<Integer> s=new HashSet<>();
+        visited[a][b]=true;
+        q.add(new int[]{a,b});
+        s.add(b);
+        int cnt=1;
+        while(!q.isEmpty()){
+            int[] t=q.poll();
+            for(int i=0; i<4; i++){
+                int ma=t[0]+move[i][0];
+                int mb=t[1]+move[i][1];
+                
+                if(ma<0||mb<0||ma>=l.length||mb>=l[0].length)continue;
+                if(visited[ma][mb]||l[ma][mb]==0)continue;
+                cnt++;
+                visited[ma][mb]=true;
+                q.add(new int[]{ma, mb});
+                s.add(mb);
             }
-            
-            max = Math.max(max,count);
-            set.clear();
-            
+        }
+        for(int set: s){
+            ans[set]+=cnt;
             
         }
-        return max;
         
-        
-    }
-    private int search(int [][] land, int d, int w, int oilId, int[][] oilMap){
-        Queue<int[]> queue = new LinkedList<>();
-        queue.offer(new int[]{d,w});
-        visited[d][w]=true;
-        oilMap[d][w]=oilId;
-        
-        int[] dd ={0,0,1,-1};
-        int[] dw ={1,-1,0,0};
-        
-        int count =0;
-        while(!queue.isEmpty()){
-            int size =queue.size();
-            count +=size;
-            
-            
-            for(int i=0; i<size; i++){
-                int []poll= queue.poll();
-                int curr_d=poll[0];
-                int curr_w=poll[1];
+         q.add(new int[]{a,b});
+         l[a][b]=cnt;
+          while(!q.isEmpty()){
+            int[] t=q.poll();
+            for(int i=0; i<4; i++){
+                int ma=t[0]+move[i][0];
+                int mb=t[1]+move[i][1];
                 
-                for(int j=0; j<4; j++){
-                    int new_d = curr_d + dd[j];
-                    int new_w= curr_w+dw[j];
-                    
-                    if (isVaild(new_d, new_w, land.length, land[0].length)&&!visited[new_d][new_w]&&land[new_d][new_w]==1){
-                        visited[new_d][new_w]=true;
-                        oilMap[new_d][new_w]=oilId;
-                        queue.offer(new int[]{new_d, new_w});
-                    }
-                    
-                }
-                
-                
+                if(ma<0||mb<0||ma>=l.length||mb>=l[0].length)continue;
+                if(l[ma][mb]==0||l[ma][mb]==cnt)continue;
+                l[ma][mb]=cnt;
+                 q.add(new int[]{ma, mb});
             }
-                
-                
-                
-                
-        }
-        return count;
-        
-        
-        
+         }
         
         
     }
-    
-    
-    private boolean isVaild(int d, int w, int depth, int width){
-        return d>=0 && d<depth && w>=0 && w<width;
-    }
-    
+        
+        
+        
 }
