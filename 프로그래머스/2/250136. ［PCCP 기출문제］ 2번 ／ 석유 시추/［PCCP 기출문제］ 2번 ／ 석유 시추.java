@@ -1,10 +1,11 @@
 import java.util.*;
 
 class Solution {
-    static boolean visited[][];
-    static int[][] move={{1,0},{0,1},{0,-1},{-1,0}};
-    static int[][] l;
-    static int[] ans;
+    boolean visited[][];
+    int[][] move={{1,0},{0,1},{0,-1},{-1,0}};
+    int[][] l;
+    int[] ans;
+    
     public int solution(int[][] land) {
         int answer = 0;
         l=land;
@@ -49,23 +50,7 @@ class Solution {
         for(int set: s){
             ans[set]+=cnt;
             
-        }
-        
-         q.add(new int[]{a,b});
-         l[a][b]=cnt;
-          while(!q.isEmpty()){
-            int[] t=q.poll();
-            for(int i=0; i<4; i++){
-                int ma=t[0]+move[i][0];
-                int mb=t[1]+move[i][1];
-                
-                if(ma<0||mb<0||ma>=l.length||mb>=l[0].length)continue;
-                if(l[ma][mb]==0||l[ma][mb]==cnt)continue;
-                l[ma][mb]=cnt;
-                 q.add(new int[]{ma, mb});
-            }
-         }
-        
+        }  
         
     }
         
