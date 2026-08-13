@@ -1,75 +1,57 @@
 
-    import java.io.BufferedReader;
-    import java.io.IOException;
-    import java.io.InputStreamReader;
+import java.util.*;
+import java.io.*;
 
-public class Solution {
+class Solution
+{
+	public static void main(String args[]) throws Exception
+	{
 
-    static int [][] route;
-    static int [][] best;
-    static int size;
-    static int answer;
-
-    public static void main(String[] args) throws IOException {
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(reader.readLine());
-        for(int i=1;i<=n;i++) {
-            size=Integer.parseInt(reader.readLine());
-            route=new int[size][size];
-            for(int j=0;j<size;j++) {
-                String[] temp=reader.readLine().split("");
-                for(int k=0;k<size;k++) {
-                    route[j][k]=Integer.parseInt(temp[k]);
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		int T;
+		T=Integer.parseInt(br.readLine());
+		
+        
+		for(int test_case = 1; test_case <= T; test_case++)
+		{
+			int n=Integer.parseInt(br.readLine());
+            int[][] route=new int[n][n];
+            for(int i=0; i<n; i++){
+            	String temp=br.readLine();
+                for(int j=0; j<n; j++){
+                	route[i][j]=temp.charAt(j)-'0';
                 }
             }
-
-            best=new int[size][size];
-            for(int j=0;j<size;j++) {
-                for (int k = 0; k < size; k++) {
-                    best[j][k] = Integer.MAX_VALUE;
+            int[][] move={{1,0},{0,1},{-1,0},{0,-1}};
+            PriorityQueue<int[]> pq=new PriorityQueue<>((a,b)->{
+            	return Integer.compare(a[2],b[2]);
+            });
+            int[][] dist=new int[n][n];
+            pq.add(new int[]{0,0,0});
+            
+            for(int i=0; i<n; i++){
+                Arrays.fill(dist[i], Integer.MAX_VALUE);
+            }
+        
+            
+            
+            while(!pq.isEmpty()){
+            	int[] t=pq.poll();
+       
+                for(int i=0; i<4; i++){
+                	int mx=t[0]+move[i][0];
+                    int my=t[1]+move[i][1];
+                	if(mx<0||my<0||mx>=n||my>=n)continue;
+                    if(dist[mx][my]<t[2])continue;
+                    if(t[2]+route[mx][my]>=dist[mx][my])continue;
+                    dist[mx][my]=t[2]+route[mx][my];
+                    pq.add(new int[]{mx,my,t[2]+route[mx][my]});
                 }
             }
-            answer=Integer.MAX_VALUE;
-            dfs(0,0,0);
-            System.out.println("#"+i+" "+answer);
-        }
-    }
-
-
-    public static void dfs(int x, int y,int time){
-        if(time>=best[x][y]) return;
-        best[x][y]=time;
-
-
-        if(x==size-1 && y==size-1) {
-            if(time<answer) {
-                answer=time;
-            }
-            return;
-        }
-
-            if(y+1<size) {
-                dfs(x,y+1,time+route[x][y+1]);
-            }
-            if(x+1<size) {
-                dfs(x+1,y,time+route[x+1][y]);
-            }
-            if(x-1>=0) {
-                dfs(x-1,y,time+route[x-1][y]);
-            }
-            if(y-1>=0) {
-                dfs(x,y-1,time+route[x][y-1]);
-            }
-
-
-
-
-
-
-    }
+            
+            System.out.println("#"+test_case+" "+dist[n-1][n-1]);
+            
+            
+		}
+	}
 }
-
-
-
-
