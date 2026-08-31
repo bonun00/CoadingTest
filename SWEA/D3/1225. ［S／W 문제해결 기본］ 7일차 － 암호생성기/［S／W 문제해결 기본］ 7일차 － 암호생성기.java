@@ -16,8 +16,8 @@
 // 표준 출력 예제
 // int a = 0;                            
 // double b = 1.0;               
-// char g = 'b';
-// String var = "ABCDEFG";
+// char g = &apos;b&apos;;
+// String var = &quot;ABCDEFG&quot;;
 // long AB = 12345678901234567L;
 //System.out.println(a);                       // int 변수 1개 출력하는 예제
 //System.out.println(b); 		       						 // double 변수 1개 출력하는 예제
@@ -36,58 +36,40 @@ class Solution
 {
 	public static void main(String args[]) throws Exception
 	{
-		/*
-		   아래의 메소드 호출은 앞으로 표준 입력(키보드) 대신 input.txt 파일로부터 읽어오겠다는 의미의 코드입니다.
-		   여러분이 작성한 코드를 테스트 할 때, 편의를 위해서 input.txt에 입력을 저장한 후,
-		   이 코드를 프로그램의 처음 부분에 추가하면 이후 입력을 수행할 때 표준 입력 대신 파일로부터 입력을 받아올 수 있습니다.
-		   따라서 테스트를 수행할 때에는 아래 주석을 지우고 이 메소드를 사용하셔도 좋습니다.
-		   단, 채점을 위해 코드를 제출하실 때에는 반드시 이 메소드를 지우거나 주석 처리 하셔야 합니다.
-		 */
-		//System.setIn(new FileInputStream("res/input.txt"));
-
-		/*
-		   표준입력 System.in 으로부터 스캐너를 만들어 데이터를 읽어옵니다.
-		 */
-		Scanner sc = new Scanner(System.in);
-		int T;
 	
-		/*
-		   여러 개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
-		*/
+		Scanner sc = new Scanner(System.in);
+	
 
 		for(int test_case = 1; test_case <= 10; test_case++)
 		{
-			T=sc.nextInt();
-			Queue<Integer> num= new ArrayDeque<>();
-            
-           	for(int i=0; i<8; i++){
-            	num.add(sc.nextInt());
-            }
-            
-            int[] check={1,2,3,4,5};
-            boolean code=true;
-            
-            while(code){
-                
-                for(int c: check){
-                	if(num.peek()-c>0){
-                    	num.add(num.poll()-c);
-                    }else{
-                    	num.poll();
-                        num.add(0);
-                        code=false;
-                        break;
-                    }
-                }
-            }
-            
-            String ans="";
+			ArrayDeque<Integer> q=new ArrayDeque<>();
+         	int T=sc.nextInt();   
             for(int i=0; i<8; i++){
-            	ans+=(" "+num.poll());
+            	q.offer(sc.nextInt());
             }
-            
-            System.out.println("#"+test_case+" "+ ans);
-            
+            int[] num={1,2,3,4,5};
+            boolean flag=false;
+			while(true){
+               for(int n: num){
+                	 int temp=q.poll()-n;
+            	if(temp<=0){
+                	q.offerLast(0);
+                    flag=true;
+                	break;
+                }else{
+                	q.offerLast(temp);
+                }
+             }  
+              if(flag){
+              	break;
+              }
+            }
+ 			int qsize=q.size();           
+            System.out.print("#"+T);
+            for(int i=0; i<qsize; i++){
+            	System.out.print(" "+q.poll());
+            }
+            System.out.println();
 
 		}
 	}
