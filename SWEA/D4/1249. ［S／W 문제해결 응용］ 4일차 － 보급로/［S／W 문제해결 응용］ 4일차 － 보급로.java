@@ -35,22 +35,20 @@ class Solution
 			}
 		
 	
-			boolean[][] visited=new boolean[n][n];
 			PriorityQueue<int[]> pq=new PriorityQueue<>((a,b)->a[2]-b[2]);
 			pq.add(new int[] {0,0,0});
-			visited[0][0]=true;
+			dist[0][0]=0;
 			while(!pq.isEmpty()) {
 				int[] t=pq.poll();
+				if(t[2]>dist[t[0]][t[1]])continue;
 
 				for(int i=0; i<4;i++) {
 					int nx=t[0]+move[i][0];
 					int ny=t[1]+move[i][1];
 					if(nx<0||ny<0||nx>=n||ny>=n)continue;
-					if(visited[nx][ny])continue;
 					int c=t[2]+arr[nx][ny];
 					if(c<dist[nx][ny]) {
 						dist[nx][ny]=c;
-						visited[nx][ny]=true;
 						pq.add(new int[] {nx,ny,c});
 					}
 					
