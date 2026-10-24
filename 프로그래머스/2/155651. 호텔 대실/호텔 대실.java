@@ -3,53 +3,46 @@ import java.util.*;
 class Solution {
     public int solution(String[][] book_time) {
         int answer = 1;
-        PriorityQueue<String[]> pq=new PriorityQueue<>((a,b)->{
-            int[] ans=time(a[0],b[0]);
-            return ans[0]-ans[1];
-        });
         
-        for(int i=0; i<book_time.length; i++){
-            pq.add(book_time[i]);
-        }
-        
-        Map<Integer,Integer> room=new HashMap<>();
-        while(!pq.isEmpty()){
-            String[] temp=pq.poll();
-            int t1=mm(temp[0]);
-            int t2=mm(temp[1])+10;
-            boolean flag=true;
-            
-            for(int i=1; i<=answer; i++){
-                if(room.getOrDefault(i,0)<=t1){                                
-                    room.put(i,t2);
-                    flag=false;
-                    break;
-                }
+        PriorityQueue<int[]> pq=new PriorityQueue<>((a,b)->{
+            if(a[0]!=b[0]){
+                return a[0]-b[0];
+            }else{
+                return a[1]-b[1];
             }
-            if(flag){
-                room.put(++answer, t2);
-            };
+        });
+         
+        int len=book_time.length;
+        for(int i=0; i<len; i++){
+            int[] a=new int[2];
+            for(int j=0; j<2; j++){
+                String[] t=book_time[i][j].split(":");
                 
-                
+                a[j]=Integer.parseInt(t[0])*60+Integer.parseInt(t[1]);
+              
+            }
+            a[1]+=10;
+            pq.add(a); 
         }
+        PriorityQueue<int[]> q=new PriorityQueue<>((a,b)->a[1]-b[1]);
 
+        for(int i=0; i<len; i++){
+           int[] cur=pq.poll();
+               
+            while(!q.isEmpty()&& cur[0]>=q.peek()[1]){
+
+                q.poll();
+            }
+            
+            q.add(cur);
+            answer=Math.max(answer,q.size());
+            
+        }
+        
+        
+        
+        
+        
         return answer;
-    }
-    int mm(String a){
-        String[] temp=a.split(":");
-        
-        return Integer.parseInt(temp[0])*60+Integer.parseInt(temp[1]);
-        
-    }
-                   
-                   
-                   
-    int[] time(String a,String b){
-        String[] t1=a.split(":");
-        String[] t2=b.split(":");
-
-        int r1= Integer.parseInt(t1[0])*60+Integer.parseInt(t1[1]);
-        int r2= Integer.parseInt(t2[0])*60+Integer.parseInt(t2[1]);
-        return new int[]{r1,r2};      
     }
 }
